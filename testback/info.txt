@@ -1,0 +1,4 @@
+->Middleware:
+Something in between. In other words, Req and Res k beech ka saara kaam. Middleware hota h.
+next() is helps to pass a req to another Middleware.
+Note:- In express we load the middleware function by calling app.use()
