@@ -53,6 +53,32 @@ exports.userPurchaseList = (req, res) => {
 };
 
 exports.pushOrderInPurchaseList = (req, res, next) => {
-	
-	next();
+	let purchases = [];
+	req.body.order.products.forEach((product) => {
+		purchases.push({
+			_id: product._id,
+			name: product.name,
+			description: product.description,
+			category: product.category,
+			quantity: product.quantity,
+			amount: req.body.order.amount,
+			transaction_id: req.body.order.transaction_id,
+		});
+	});
+
+	//store in db
+	//We're gonna use findOneAndUpdate because if something is already there than it cant override it
+	User.findOneAndUpdate(
+		{ _id: req.profile._id },
+		{ $push: { purchases: purchases } },
+		{ new: true }, //It helps to send the object which is updated not the older one
+		(err, purchases) => {
+			if (err) {
+				return res.status(400).json({
+					error: "Unable to save purchase list",
+				});
+			}
+			next();
+		}
+	);
 };
