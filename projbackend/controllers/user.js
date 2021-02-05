@@ -40,7 +40,7 @@ exports.updateUser = (req, res) => {
 };
 
 exports.userPurchaseList = (req, res) => {
-	Orders.find({ user: req.profile._id })
+	Orders.find({ user: req.profile._id })			//req.profile._id is comes up from the middleware getUserById which is having params to get id from url
 		.populate("user", "_id name")
 		.exec((err, order) => {
 			if (err) {
@@ -48,7 +48,7 @@ exports.userPurchaseList = (req, res) => {
 					error: "No Order in this Account",
 				});
 			}
-			return res.json(order);
+			return res.json(order);		//entire order object is return 
 		});
 };
 
@@ -69,7 +69,7 @@ exports.pushOrderInPurchaseList = (req, res, next) => {
 	//store in db
 	//We're gonna use findOneAndUpdate because if something is already there than it cant override it
 	User.findOneAndUpdate(
-		{ _id: req.profile._id },
+		{ _id: req.profile._id },	//symbolise user id which logged in
 		{ $push: { purchases: purchases } },
 		{ new: true }, //It helps to send the object which is updated not the older one
 		(err, purchases) => {
