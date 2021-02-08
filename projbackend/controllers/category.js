@@ -37,3 +37,30 @@ exports.getAllCategories = (req, res) => {
 exports.getCategory = (req, res) => {
 	return res.json(req.category);
 };
+
+exports.updateCategory = (req, res) => {
+	const category = req.category; //req.category is fetched from middleware
+	category.name = req.body.name;
+	category.save((err, updateCategory) => {
+		if (err) {
+			return res.status(400).json({
+				error: "Failed To update Category",
+			});
+		}
+		res.json(updateCategory);
+	});
+};
+
+exports.deleteCategory = (req, res) => {
+	const category = req.category;
+	category.remove((err, category) => {
+		if (err) {
+			return res.status(400).json({
+				error: "Failed to delete this category",
+			});
+		}
+		res.json({
+			message: `${category} is Successfully Deleted`,
+		});
+	});
+};
