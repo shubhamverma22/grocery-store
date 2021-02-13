@@ -11,6 +11,7 @@ const {
 	deleteProduct,
 	updateProduct,
 	getAllProducts,
+	getAllUniqueCategories,
 } = require("../controllers/product");
 
 //all of params
@@ -49,4 +50,5 @@ router.delete(
 );
 //listing routes
 router.get("/products", getAllProducts);
+router.get("/product/categories", getAllUniqueCategories);
 module.exports = router;
